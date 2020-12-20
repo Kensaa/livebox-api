@@ -1,0 +1,13 @@
+HEADER :
+
+authorization: X-Sah-Login
+
+{
+    "service": "sah.Device.Information",
+    "method": "createContext",
+    "parameters": {
+      "applicationName": "webui",
+      "username": "admin",
+      "password": "72mDptUw"
+    }
+}

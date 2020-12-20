@@ -1,0 +1,14 @@
+HEADER:
+Authorization: X-Sah [token]
+Content-Type: application/x-sah-ws-4-call+json
+
+REQUEST:
+{
+  "service": "Scheduler",
+  "method": "overrideSchedule",
+  "parameters": {
+    "type": "ToD",
+    "ID": "D8:C4:6A:B5:EF:FD",
+    "override": "Enable"
+  }
+}

@@ -1,0 +1,11 @@
+HEADER :
+
+authorization: X-Sah [token]
+content-type: application/x-sah-ws-4-call+json
+
+
+{
+  "service": "NMC",
+  "method": "get",
+  "parameters": {}
+}
