@@ -139,12 +139,56 @@ async function createScheduler(options){
   });
 }
 
+async function overrideScheduler(options){
+  let address = options.host;
+  let token = options.token;
+  let cookie = options.cookie;
+  let mac = options.info.mac;
+  let state = options.info.state;
+
+  let request = {
+    "service": "Scheduler",
+    "method": "overrideSchedule",
+    "parameters": {
+      "type": "ToD",
+      "ID": mac,
+      "override": state
+    }
+  }
+  let reqOptions = {
+      hostname: address,
+      path: "/ws",
+      method: "POST",
+      headers: {
+        "authorization": `X-Sah ${token}`,
+        "content-type": "application/x-sah-ws-4-call+json",
+        "cookie":cookie
+      }
+    }
+  return new Promise((resolve,reject)=>{
+    http.request(reqOptions,res =>{
+      let data = ""
+      res.on("data", d => { 
+          data += d
+      })
+      res.on("end", () => {
+          let json = JSON.parse(data);
+          resolve(json);
+      })
+    }).on("error", console.error)
+      .end(JSON.stringify(request));
+  });
+}
+
 async function toggleScheduler(options,state){
+  options.info.state = state;
   let schInfo = await getScheduleInfo(options)
   if(!schInfo){
     createScheduler(options)
+  }else if(!schInfo.override == state){
+    overrideScheduler(options);
   }
 
   
 }
-module.exports = { login , getSchedulerRaw, getScheduleInfo, toggleScheduler, createScheduler};
+module.exports = { login , getSchedulerRaw, getScheduleInfo, toggleScheduler, createScheduler, overrideScheduler};
