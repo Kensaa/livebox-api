@@ -4,7 +4,7 @@ const livebox = require("./livebox");
 
 async function main(){
 
-    let res = await livebox.login('192.168.1.1','admin','72mDptUw');
+    let res = await livebox.login('192.168.1.1',process.env.livebox_user,process.livebox_password);
     let token = res.token;
     let cookie = res.cookie;
     //console.log(`token : ${token}`);
@@ -18,8 +18,16 @@ async function main(){
     }
 
     let scheduler = await livebox.getScheduleInfo(options);
-    console.log(`scheduler : ${JSON.stringify(scheduler)}`);
+    let newState = "Enable";
+    if(scheduler.override == "Disable"){
+        newState = "Enable";
+    }else if(scheduler.override == "Enable"){
+        newState = "Disable";
+    }
     
+    let options2 = options;
+    options2.info.state = newState;
+    livebox.toggleScheduler(options2);
     
 
 
