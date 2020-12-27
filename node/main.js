@@ -5,7 +5,7 @@ const target = 'E8:5A:8B:D6:64:BF';
 async function main(){
 
     let loginRes = await livebox.login('192.168.1.1','admin','72mDptUw');
-    console.log(loginRes.token);
+    //console.log(loginRes.token);
     
     let options = {
         host:'192.168.1.1',
@@ -16,6 +16,6 @@ async function main(){
         },
     }
 
-    livebox.toggleScheduler(options);
+    await livebox.toggleScheduler(options);
 }
 main();

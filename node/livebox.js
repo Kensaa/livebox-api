@@ -183,10 +183,15 @@ async function overrideScheduler(options){
 async function changeState(options){
   let state = options.info.state 
   let schInfo = await getScheduleInfo(options)
+  console.log(`aHHHHHHHHHHHH ${JSON.stringify(schInfo)}`);
+  console.log(schInfo.override);
+  console.log(state);
+  
   if(!schInfo){
-    createScheduler(options)
-  }else if(!schInfo.override == state){
-    overrideScheduler(options);
+    await createScheduler(options)
+  }else if(schInfo.override.replace(' ','') != state){
+    await overrideScheduler(options);
+
   }
 
   
@@ -196,17 +201,22 @@ async function toggleScheduler(options){
   let scheduler = await getScheduleInfo(options);
   let currentState = scheduler.override.replace(' ','');
   let newState = (currentState == 'Enable' ? 'Disable' : 'Enable');
-  options.info.state = newState;
   let overrideOptions = {
       host:'192.168.1.1',
       token:options.token,
       cookie:options.cookie,
       info:{
-          mac:options.target,
+          mac:options.info.mac,
           state:newState
       }
   }
+  //console.log(`currentState : ${currentState}`);
+ // console.log(`futurState : ${newState}`);
+  //console.log(`options : ${JSON.stringify(overrideOptions)}`);
+
   await changeState(overrideOptions);
+  //console.log(JSON.stringify(await getScheduleInfo(options)));
+
 }
 module.exports = { login , getSchedulerRaw, getScheduleInfo, toggleScheduler, createScheduler,changeState, overrideScheduler};
 
