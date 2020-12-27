@@ -13,7 +13,8 @@ async function main(){
         cookie:loginRes.cookie,
         info:{
             mac:target
-        }
+        },
+        loginRes:loginRes
     }
 
     livebox.toggleScheduler(options);
