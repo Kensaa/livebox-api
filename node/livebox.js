@@ -199,10 +199,10 @@ async function toggleScheduler(options){
   options.info.state = newState;
   let overrideOptions = {
       host:'192.168.1.1',
-      token:loginRes.token,
-      cookie:loginRes.cookie,
+      token:options.token,
+      cookie:options.cookie,
       info:{
-          mac:target,
+          mac:options.target,
           state:newState
       }
   }

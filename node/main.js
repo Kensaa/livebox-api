@@ -14,7 +14,6 @@ async function main(){
         info:{
             mac:target
         },
-        loginRes:loginRes
     }
 
     livebox.toggleScheduler(options);
