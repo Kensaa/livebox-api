@@ -183,9 +183,7 @@ async function overrideScheduler(options){
 async function changeState(options){
   let state = options.info.state 
   let schInfo = await getScheduleInfo(options)
-  console.log(`aHHHHHHHHHHHH ${JSON.stringify(schInfo)}`);
-  console.log(schInfo.override);
-  console.log(state);
+  
   
   if(!schInfo){
     await createScheduler(options)
@@ -210,12 +208,10 @@ async function toggleScheduler(options){
           state:newState
       }
   }
-  //console.log(`currentState : ${currentState}`);
- // console.log(`futurState : ${newState}`);
-  //console.log(`options : ${JSON.stringify(overrideOptions)}`);
+  
 
   await changeState(overrideOptions);
-  //console.log(JSON.stringify(await getScheduleInfo(options)));
+  
 
 }
 module.exports = { login , getSchedulerRaw, getScheduleInfo, toggleScheduler, createScheduler,changeState, overrideScheduler};
