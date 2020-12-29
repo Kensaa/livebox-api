@@ -18,7 +18,7 @@ async function request(req,reqOptions){
 }
 
 async function login(address,user,pass){
-    let request = {
+    let req = {
         "service": "sah.Device.Information",
         "method": "createContext",
         "parameters": {
@@ -37,25 +37,16 @@ async function login(address,user,pass){
         }
       }
     return new Promise((resolve,reject)=>{
-      http.request(reqOptions,res =>{
-        let data = ""
-        res.on("data", d => {
-            data += d
-        })
-        res.on("end", () => {
-            let json = JSON.parse(data);
-            let token = json.data.contextID
-            let cookie = Object.values(res.headers)[0][0].split(';')[0];
-            let ret = {
-              token:token,
-              cookie:cookie
-            }
-            resolve(ret);
-        })
-      }).on("error", console.error)
-        .end(JSON.stringify(request));
-
-    });
+      let data = await request(req,reqOptions)
+      let json = JSON.parse(data);
+      let token = json.data.contextID
+      let cookie = Object.values(res.headers)[0][0].split(';')[0];
+      let ret = {
+        token:token,
+        cookie:cookie
+      }
+      resolve(ret);
+      });
 }
 
 async function getSchedulerRaw(options){
@@ -65,7 +56,7 @@ async function getSchedulerRaw(options){
     let mac = options.info.mac;
 
 
-    let request = {
+    let req = {
         "service": "Scheduler",
         "method": "getSchedule",
         "parameters": {
@@ -84,17 +75,9 @@ async function getSchedulerRaw(options){
         }
       }
     return new Promise((resolve,reject)=>{
-      http.request(reqOptions,res =>{
-        let data = ""
-        res.on("data", d => { 
-            data += d
-        })
-        res.on("end", () => {
-            let json = JSON.parse(data);
-            resolve(json);
-        })
-      }).on("error", console.error)
-        .end(JSON.stringify(request));
+      let data = await request(req,reqOptions)
+      let json = JSON.parse(data);
+      resolve(json);
     });
 }
 
@@ -116,7 +99,7 @@ async function createScheduler(options){
   let mac = options.info.mac;
   let state = options.info.state;
 
-  let request = {
+  let req = {
     "service": "Scheduler",
     "method": "addSchedule",
     "parameters": {
@@ -142,17 +125,9 @@ async function createScheduler(options){
       }
     }
   return new Promise((resolve,reject)=>{
-    http.request(reqOptions,res =>{
-      let data = ""
-      res.on("data", d => { 
-          data += d
-      })
-      res.on("end", () => {
-          let json = JSON.parse(data);
-          resolve(json);
-      })
-    }).on("error", console.error)
-      .end(JSON.stringify(request));
+    let data = await request(req,reqOptions);
+    let json = JSON.parse(data);
+    resolve(json);
   });
 }
 
@@ -163,7 +138,7 @@ async function overrideScheduler(options){
   let mac = options.info.mac;
   let state = options.info.state;
 
-  let request = {
+  let req = {
     "service": "Scheduler",
     "method": "overrideSchedule",
     "parameters": {
@@ -182,34 +157,21 @@ async function overrideScheduler(options){
         "cookie":cookie
       }
     }
-  return new Promise((resolve,reject)=>{
-    http.request(reqOptions,res =>{
-      let data = ""
-      res.on("data", d => { 
-          data += d
-      })
-      res.on("end", () => {
-          let json = JSON.parse(data);
-          resolve(json);
-      })
-    }).on("error", console.error)
-      .end(JSON.stringify(request));
-  });
+    return new Promise((resolve,reject)=>{
+      let data = await request(req,reqOptions);
+      let json = JSON.parse(data);
+      resolve(json);
+    });
 }
 
 async function changeState(options){
   let state = options.info.state 
   let schInfo = await getScheduleInfo(options)
-  
-  
   if(!schInfo){
     await createScheduler(options)
   }else if(schInfo.override.replace(' ','') != state){
     await overrideScheduler(options);
-
   }
-
-  
 }
 
 async function toggleScheduler(options){
@@ -225,11 +187,7 @@ async function toggleScheduler(options){
           state:newState
       }
   }
-  
-
   await changeState(overrideOptions);
-  
-
 }
-module.exports = { login , getSchedulerRaw, getScheduleInfo, toggleScheduler, createScheduler,changeState, overrideScheduler};
+module.exports = { login, getSchedulerRaw, getScheduleInfo, toggleScheduler, createScheduler, changeState, overrideScheduler};
 
