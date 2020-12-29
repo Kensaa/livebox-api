@@ -16,6 +16,6 @@ async function main(){
         },
     }
 
-    await livebox.toggleScheduler(options);
+    let res = await livebox.getScheduleInfo(options);
 }
 main();

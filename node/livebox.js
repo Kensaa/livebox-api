@@ -37,15 +37,17 @@ async function login(address,user,pass){
         }
       }
     return new Promise((resolve,reject)=>{
-      let data = await request(req,reqOptions)
-      let json = JSON.parse(data);
-      let token = json.data.contextID
-      let cookie = Object.values(res.headers)[0][0].split(';')[0];
-      let ret = {
-        token:token,
-        cookie:cookie
-      }
-      resolve(ret);
+        request(req,reqOptions).then((data) =>{
+        let json = JSON.parse(data);
+        let token = json.data.contextID
+        let cookie = Object.values(res.headers)[0][0].split(';')[0];
+        let ret = {
+          token:token,
+          cookie:cookie
+        }
+        resolve(ret);
+      })
+      
       });
 }
 
@@ -75,20 +77,22 @@ async function getSchedulerRaw(options){
         }
       }
     return new Promise((resolve,reject)=>{
-      let data = await request(req,reqOptions)
-      let json = JSON.parse(data);
-      resolve(json);
+      request(req,reqOptions).then((data)=>{
+        let json = JSON.parse(data);
+        resolve(json);
+      });
     });
 }
 
 async function getScheduleInfo(options){
-  return new Promise(async(resolve,reject)=> {
-    let res = await getSchedulerRaw(options);
-    if(res.status = false){
-      resolve(null);
-    }else{
-      resolve(res.data.scheduleInfo);
-    }
+  return new Promise((resolve,reject)=> {
+    getSchedulerRaw(options).then((res)=>{
+      if(res.status = false){
+        resolve(null);
+      }else{
+        resolve(res.data.scheduleInfo);
+      }
+    });
   });
 }
 
@@ -125,9 +129,11 @@ async function createScheduler(options){
       }
     }
   return new Promise((resolve,reject)=>{
-    let data = await request(req,reqOptions);
-    let json = JSON.parse(data);
-    resolve(json);
+    request(req,reqOptions).then((data) =>{
+      let json = JSON.parse(data);
+      resolve(json);
+    });
+    
   });
 }
 
@@ -158,9 +164,11 @@ async function overrideScheduler(options){
       }
     }
     return new Promise((resolve,reject)=>{
-      let data = await request(req,reqOptions);
-      let json = JSON.parse(data);
-      resolve(json);
+      request(req,reqOptions).then((data) =>{
+        let json = JSON.parse(data);
+        resolve(json);
+      });
+      
     });
 }
 
