@@ -8,7 +8,11 @@ async function request(req,reqOptions){
           data += d
       })
       res.on("end", () => {
-          resolve(ret);
+          let r = {
+            header: res.headers,
+            data: data
+          }
+          resolve(r);
       })
     }).on("error",(e)=>{
       console.error(e);
@@ -38,9 +42,9 @@ async function login(address,user,pass){
       }
     return new Promise((resolve,reject)=>{
         request(req,reqOptions).then((data) =>{
-        let json = JSON.parse(data);
+        let json = JSON.parse(data.data);
         let token = json.data.contextID
-        let cookie = Object.values(res.headers)[0][0].split(';')[0];
+        let cookie = Object.values(data.headers)[0][0].split(';')[0];
         let ret = {
           token:token,
           cookie:cookie
@@ -78,7 +82,7 @@ async function getSchedulerRaw(options){
       }
     return new Promise((resolve,reject)=>{
       request(req,reqOptions).then((data)=>{
-        let json = JSON.parse(data);
+        let json = JSON.parse(data.data);
         resolve(json);
       });
     });
@@ -130,7 +134,7 @@ async function createScheduler(options){
     }
   return new Promise((resolve,reject)=>{
     request(req,reqOptions).then((data) =>{
-      let json = JSON.parse(data);
+      let json = JSON.parse(data.data);
       resolve(json);
     });
     
@@ -165,7 +169,7 @@ async function overrideScheduler(options){
     }
     return new Promise((resolve,reject)=>{
       request(req,reqOptions).then((data) =>{
-        let json = JSON.parse(data);
+        let json = JSON.parse(data.data);
         resolve(json);
       });
       
