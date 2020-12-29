@@ -9,7 +9,7 @@ async function request(req,reqOptions){
       })
       res.on("end", () => {
           let r = {
-            header: res.headers,
+            headers: res.headers,
             data: data
           }
           resolve(r);
