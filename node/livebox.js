@@ -1,5 +1,22 @@
 const http = require("http");
 
+async function request(req,reqOptions){
+  return new Promise((resolve,reject)=>{
+    http.request(reqOptions,res =>{
+      let data = ""
+      res.on("data", d => {
+          data += d
+      })
+      res.on("end", () => {
+          resolve(ret);
+      })
+    }).on("error",(e)=>{
+      console.error(e);
+      reject(e);
+    }).end(JSON.stringify(req));
+  });
+}
+
 async function login(address,user,pass){
     let request = {
         "service": "sah.Device.Information",
