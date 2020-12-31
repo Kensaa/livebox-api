@@ -201,5 +201,59 @@ async function toggleScheduler(options){
   }
   await changeState(overrideOptions);
 }
-module.exports = { login, getSchedulerRaw, getScheduleInfo, toggleScheduler, createScheduler, changeState, overrideScheduler};
+
+async function getWanStatus(options){
+  let req = {
+    "service": "NMC",
+    "method": "getWANStatus",
+    "parameters": {}
+  }
+  let reqOptions = {
+    hostname: options.host,
+    path: "/ws",
+    method: "POST",
+    headers: {
+      "authorization": `X-Sah ${options.token}`,
+      "content-type": "application/x-sah-ws-4-call+json",
+      "cookie":options.cookie
+    }
+  }
+
+  return new Promise((resolve,reject)=>{
+    request(req,reqOptions).then((data) =>{
+      let json = JSON.parse(data.data);
+      resolve(json);
+    });
+  });
+
+}
+
+async function getWanSpeed(){
+  let req = {
+    "service": "NeMo.Intf.data",
+    "method": "getMIBs",
+    "parameters": {
+      "mibs": "dsl"
+    }
+  }
+  let reqOptions = {
+    hostname: options.host,
+    path: "/ws",
+    method: "POST",
+    headers: {
+      "authorization": `X-Sah ${options.token}`,
+      "content-type": "application/x-sah-ws-4-call+json",
+      "cookie":options.cookie
+    }
+  }
+
+  return new Promise((resolve,reject)=>{
+    request(req,reqOptions).then((data) =>{
+      let json = JSON.parse(data.data);
+      resolve(json);
+    });
+  });
+}
+
+module.exports = { login, getSchedulerRaw, getScheduleInfo, toggleScheduler, createScheduler, changeState, overrideScheduler, getWanStatus,getWanSpeed};
 

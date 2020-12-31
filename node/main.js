@@ -17,5 +17,6 @@ async function main(){
     }
 
     let res = await livebox.getScheduleInfo(options);
+    console.log(JSON.stringify(res));
 }
 main();
