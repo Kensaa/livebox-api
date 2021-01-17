@@ -283,5 +283,34 @@ async function restart(options){
   });
 }
 
-module.exports = {login, getSchedulerRaw, getScheduleInfo, toggleScheduler, changeSchedulerState, overrideScheduler, getWanStatus, getWanSpeed, restart};
+async function getDevicesRaw(options){
+  let req = {
+    "service": "Devices",
+    "method": "get",
+    "parameters": {
+      "expression": {
+        "ETHERNET": "not interface and not self and eth and .Active==true",
+        "WIFI": "not interface and not self and wifi and .Active==true"
+      }
+    }
+  };
+  let reqOptions = {
+    hostname: options.host,
+    path: "/ws",
+    method: "POST",
+    headers: {
+      "authorization": `X-Sah ${options.token}`,
+      "content-type": "application/x-sah-ws-4-call+json",
+      "cookie":options.cookie
+    }
+  }
+  return new Promise((resolve,reject)=>{
+    request(req,reqOptions).then((data) =>{
+      let json = JSON.parse(data.data);
+      resolve(json);
+    });
+  });
+}
+
+module.exports = {login, getSchedulerRaw, getScheduleInfo, toggleScheduler, changeSchedulerState, overrideScheduler, getWanStatus, getWanSpeed, restart, getDevicesRaw};
 
