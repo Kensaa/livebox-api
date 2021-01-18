@@ -1,6 +1,6 @@
 const livebox = require("./livebox");
 
-const target = 'E8:5A:8B:D6:64:BF';
+const target = '34:14:5F:2D:AD:7B';
 
 async function main(){
 
@@ -16,7 +16,7 @@ async function main(){
         },
     }
 
-    let res = await livebox.getDevicesRaw(options);
-    console.log(res);
+    let res = await livebox.getDeviceDetail(options);
+    console.log(JSON.stringify(res));
 }
 main();
