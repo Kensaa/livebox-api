@@ -16,7 +16,7 @@ async function main(){
         },
     }
 
-    let res = await livebox.getDeviceDetail(options);
+    let res = await livebox.getWanSpeed(options);
     console.log(JSON.stringify(res));
 }
 main();

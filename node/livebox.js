@@ -228,7 +228,7 @@ async function getWanStatus(options){
 
 }
 
-async function getWanSpeed(){
+async function getWanSpeed(options){
   let req = {
     "service": "NeMo.Intf.data",
     "method": "getMIBs",
