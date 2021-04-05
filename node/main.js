@@ -12,11 +12,15 @@ async function main(){
         token:loginRes.token,
         cookie:loginRes.cookie,
         info:{
-            mac:target
+            internalPort:8999,
+            externalPort:8999,
+            destinationIPAddress:'192.168.1.11',
+            id:'syncplay',
+            description:'syncplay server'
         },
     }
 
-    let res = await livebox.getWanSpeed(options);
+    let res = await livebox.setPortForwarding(options);
     console.log(JSON.stringify(res));
 }
 main();

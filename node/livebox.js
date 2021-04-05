@@ -336,5 +336,67 @@ async function getDeviceDetail(options){
   });
 }
 
-module.exports = {login, getSchedulerRaw, getScheduleInfo, toggleScheduler, changeSchedulerState, overrideScheduler, getWanStatus, getWanSpeed, restart, getDevicesRaw, getDeviceDetail};
+async function getPortForwarding(options){
+  let req = {
+    "service": "Firewall",
+    "method": "getPortForwarding",
+    "parameters": {
+      "origin": "webui"
+    }
+  };
+  let reqOptions = {
+    hostname: options.host,
+    path: "/ws",
+    method: "POST",
+    headers: {
+      "authorization": `X-Sah ${options.token}`,
+      "content-type": "application/x-sah-ws-4-call+json",
+      "cookie":options.cookie
+    }
+  }
+  return new Promise((resolve,reject)=>{
+    request(req,reqOptions).then((data) =>{
+      let json = JSON.parse(data.data);
+      resolve(json);
+    });
+  });
+}
+
+async function setPortForwarding(options){
+  let req = {
+    "service": "Firewall",
+    "method": "setPortForwarding",
+    "parameters": {
+      "id": options.info.id,
+      "internalPort": options.info.internalPort,
+      "externalPort": options.info.externalPort,
+      "destinationIPAddress": options.info.destinationIPAddress,
+      "enable": true,
+      "persistent": true,
+      "protocol": "6",
+      "description": options.info.description,
+      "sourceInterface": "data",
+      "origin": "webui",
+      "destinationMACAddress": ""
+    }
+  };
+  let reqOptions = {
+    hostname: options.host,
+    path: "/ws",
+    method: "POST",
+    headers: {
+      "authorization": `X-Sah ${options.token}`,
+      "content-type": "application/x-sah-ws-4-call+json",
+      "cookie":options.cookie
+    }
+  }
+  return new Promise((resolve,reject)=>{
+    request(req,reqOptions).then((data) =>{
+      let json = JSON.parse(data.data);
+      resolve(json);
+    });
+  });
+}
+
+module.exports = {login, getSchedulerRaw, getScheduleInfo, toggleScheduler, changeSchedulerState, overrideScheduler, getWanStatus, getWanSpeed, restart, getDevicesRaw, getDeviceDetail, getPortForwarding, setPortForwarding};
 
