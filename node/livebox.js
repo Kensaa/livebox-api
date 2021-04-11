@@ -398,7 +398,82 @@ async function setPortForwarding(options){
   });
 }
 
+async function getStaticIps(options){
+  let req = {
+    "service": "DHCPv4.Server.Pool.default",
+    "method": "getStaticLeases",
+    "parameters": "default"
+  }
+  let reqOptions = {
+    hostname: options.host,
+    path: "/ws",
+    method: "POST",
+    headers: {
+      "authorization": `X-Sah ${options.token}`,
+      "content-type": "application/x-sah-ws-4-call+json",
+      "cookie":options.cookie
+    }
+  }
+  return new Promise((resolve,reject)=>{
+    request(req,reqOptions).then((data) =>{
+      let json = JSON.parse(data.data);
+      resolve(json);
+    });
+  });
+}
+
+async function setStaticIp(options){
+  let req = {
+    "service": "DHCPv4.Server.Pool.default",
+    "method": "addStaticLease",
+    "parameters": {
+      "MACAddress": options.info.mac,
+      "IPAddress": options.info.ip
+    }
+  }
+  let reqOptions = {
+    hostname: options.host,
+    path: "/ws",
+    method: "POST",
+    headers: {
+      "authorization": `X-Sah ${options.token}`,
+      "content-type": "application/x-sah-ws-4-call+json",
+      "cookie":options.cookie
+    }
+  }
+  return new Promise((resolve,reject)=>{
+    request(req,reqOptions).then((data) =>{
+      let json = JSON.parse(data.data);
+      resolve(json);
+    });
+  });
+}
 
 
-module.exports = {login, getSchedulerRaw, getScheduleInfo, toggleScheduler, changeSchedulerState, overrideScheduler, getWanStatus, getWanSpeed, restart, getDevicesRaw, getDeviceDetail, getPortForwarding, setPortForwarding};
+async function deleteStaticIp(options){
+  let req = {
+    "service": "DHCPv4.Server.Pool.default",
+    "method": "deleteStaticLease",
+    "parameters": {
+      "MACAddress": options.info.mac
+    }
+  }
+  let reqOptions = {
+    hostname: options.host,
+    path: "/ws",
+    method: "POST",
+    headers: {
+      "authorization": `X-Sah ${options.token}`,
+      "content-type": "application/x-sah-ws-4-call+json",
+      "cookie":options.cookie
+    }
+  }
+  return new Promise((resolve,reject)=>{
+    request(req,reqOptions).then((data) =>{
+      let json = JSON.parse(data.data);
+      resolve(json);
+    });
+  });
+}
+module.exports = {login, getSchedulerRaw, getScheduleInfo, toggleScheduler, changeSchedulerState, overrideScheduler, getWanStatus, getWanSpeed, restart, getDevicesRaw, getDeviceDetail, getPortForwarding, setPortForwarding, getStaticIps, setStaticIps, };
 
