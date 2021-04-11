@@ -398,5 +398,7 @@ async function setPortForwarding(options){
   });
 }
 
+
+
 module.exports = {login, getSchedulerRaw, getScheduleInfo, toggleScheduler, changeSchedulerState, overrideScheduler, getWanStatus, getWanSpeed, restart, getDevicesRaw, getDeviceDetail, getPortForwarding, setPortForwarding};
 

@@ -4,7 +4,7 @@ const target = '34:14:5F:2D:AD:7B';
 
 async function main(){
 
-    let loginRes = await livebox.login('192.168.1.1','admin','72mDptUw');
+    let loginRes = await livebox.login('192.168.1.1','admin',process.env.livebox_password);
     //console.log(loginRes.token);
     
     let options = {
@@ -12,11 +12,11 @@ async function main(){
         token:loginRes.token,
         cookie:loginRes.cookie,
         info:{
-            internalPort:8999,
-            externalPort:8999,
-            destinationIPAddress:'192.168.1.11',
-            id:'syncplay',
-            description:'syncplay server'
+            internalPort:50705,
+            externalPort:50705,
+            destinationIPAddress:'192.168.1.69',
+            id:'streamdeck',
+            description:'streamdeck'
         },
     }
 
