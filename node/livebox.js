@@ -475,5 +475,5 @@ async function deleteStaticIp(options){
     });
   });
 }
-module.exports = {login, getSchedulerRaw, getScheduleInfo, toggleScheduler, changeSchedulerState, overrideScheduler, getWanStatus, getWanSpeed, restart, getDevicesRaw, getDeviceDetail, getPortForwarding, setPortForwarding, getStaticIps, setStaticIps, };
+module.exports = {login, getSchedulerRaw, getScheduleInfo, toggleScheduler, changeSchedulerState, overrideScheduler, getWanStatus, getWanSpeed, restart, getDevicesRaw, getDeviceDetail, getPortForwarding, setPortForwarding, getStaticIps, setStaticIp, deleteStaticIp};
 
