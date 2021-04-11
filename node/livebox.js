@@ -91,7 +91,7 @@ async function getSchedulerRaw(options){
 async function getScheduleInfo(options){
   return new Promise((resolve,reject)=> {
     getSchedulerRaw(options).then((res)=>{
-      if(res.status = false){
+      if(!res.status){
         resolve(null);
       }else{
         resolve(res.data.scheduleInfo);
@@ -181,7 +181,7 @@ async function changeSchedulerState(options){
   let schInfo = await getScheduleInfo(options)
   if(!schInfo){
     await createScheduler(options)
-  }else if(schInfo.override.replace(' ','') != state){
+  }else if(schInfo.override.replace(' ','') !== state){
     await overrideScheduler(options);
   }
 }
@@ -189,7 +189,7 @@ async function changeSchedulerState(options){
 async function toggleScheduler(options){
   let scheduler = await getScheduleInfo(options);
   let currentState = scheduler.override.replace(' ','');
-  let newState = (currentState == 'Enable' ? 'Disable' : 'Enable');
+  let newState = (currentState === 'Enable' ? 'Disable' : 'Enable');
   let overrideOptions = {
       host:'192.168.1.1',
       token:options.token,
